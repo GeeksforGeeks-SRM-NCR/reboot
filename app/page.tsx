@@ -4,10 +4,14 @@ import MissionBrief from "./components/MissionBrief";
 import DomainTracks from "./components/DomainTracks";
 import WorkshopSection from "./components/WorkshopSection";
 import RebootSequence from "./components/RebootSequence";
+import BackgroundVideo from "./components/BackgroundVideo";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col bg-black text-white overflow-x-hidden selection:bg-red-500 selection:text-black">
+      {/* Background Video */}
+      <BackgroundVideo />
+
       <HeroSection />
       <SystemStatus />
       <MissionBrief />

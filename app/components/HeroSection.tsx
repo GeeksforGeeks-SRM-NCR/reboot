@@ -32,15 +32,12 @@ export default function HeroSection() {
 
     return (
         <section ref={containerRef} className="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden">
-            {/* Background Noise/Overlay elements could go here */}
-            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 pointer-events-none"></div>
-
             <div ref={textRef} className="z-10 text-center flex flex-col items-center gap-6">
                 <div className="border border-red-500/50 bg-red-900/10 px-4 py-2 text-red-500 font-mono text-sm tracking-widest uppercase mb-4 animate-pulse">
                     ⚠ Critical System Alert ⚠
                 </div>
 
-                <h1 className="text-8xl md:text-9xl font-bold font-heading tracking-tighter uppercase text-white mix-blend-difference">
+                <h1 id="reboot-main-text" className="text-8xl md:text-9xl font-bold font-heading tracking-tighter uppercase text-white mix-blend-difference">
                     RE:BOOT
                 </h1>
 

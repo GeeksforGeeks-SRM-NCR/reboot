@@ -11,7 +11,7 @@ body {
   background: var(--background);
   font-family: var(--font-mono);
   overflow-x: hidden;
-  cursor: none; /* Custom cursor to be added later */
+  cursor: auto;
 }
 
 /* Base selection color */

@@ -53,7 +53,8 @@ export default function SystemStatus() {
                     <div
                         key={sys.id}
                         ref={(el) => { cardsRef.current[idx] = el; }}
-                        className="group border border-white/10 bg-white/5 p-6 hover:bg-red-900/10 transition-colors duration-300 relative overflow-hidden backdrop-blur-sm"
+                        role="button"
+                        className="group border border-white/10 bg-white/5 p-6 hover:bg-red-900/10 transition-colors duration-300 relative overflow-hidden backdrop-blur-sm cursor-pointer"
                     >
                         <div className="flex justify-between items-start mb-4">
                             <span className="font-mono text-xs text-zinc-500">{sys.id} // 0{idx + 1}</span>

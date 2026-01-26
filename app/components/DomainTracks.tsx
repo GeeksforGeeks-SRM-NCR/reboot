@@ -57,6 +57,7 @@ export default function DomainTracks() {
                     <div
                         key={i}
                         ref={(el) => { panelsRef.current[i] = el }}
+                        role="button"
                         className={cn("group relative p-8 md:p-12 border-l-4 bg-zinc-900/50 hover:bg-zinc-800 transition-colors cursor-pointer", d.color)}
                     >
                         <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 transition-opacity">
