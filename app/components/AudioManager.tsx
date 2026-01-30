@@ -2,23 +2,17 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-export default function AudioManager() {
-  // Start with sound ON (true) which means music will play
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [preloaderComplete, setPreloaderComplete] = useState(false);
+interface AudioManagerProps {
+  startMusic?: boolean;
+  onMusicReady?: () => void;
+}
+
+export default function AudioManager({ startMusic = false, onMusicReady }: AudioManagerProps) {
+  const [soundEnabled, setSoundEnabled] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const bgMusicRef = useRef<HTMLAudioElement | null>(null);
   const hoverSoundRef = useRef<HTMLAudioElement | null>(null);
   const hoverListenersRef = useRef<Map<Element, () => void>>(new Map());
-  const hasAttemptedPlayRef = useRef(false);
-
-  // Listen for preloader completion
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setPreloaderComplete(true);
-    }, 6000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const playHoverSound = useCallback(() => {
     // Play hover sound when soundEnabled is TRUE (music playing mode)
@@ -53,8 +47,8 @@ export default function AudioManager() {
     hoverListenersRef.current.clear();
   }, []);
 
+  // Initialize audio on mount
   useEffect(() => {
-    // Initialize audio elements
     bgMusicRef.current = new Audio('/cinematic.mp3');
     bgMusicRef.current.loop = true;
     bgMusicRef.current.volume = 0.35;
@@ -62,52 +56,18 @@ export default function AudioManager() {
     hoverSoundRef.current = new Audio('/bgaudio.mp3');
     hoverSoundRef.current.volume = 0.5;
 
-    // Function to start music - music plays when soundEnabled is TRUE and preloader is complete
-    const startMusic = () => {
-      if (soundEnabled && preloaderComplete && bgMusicRef.current && bgMusicRef.current.paused && !hasAttemptedPlayRef.current) {
-        hasAttemptedPlayRef.current = true;
-        bgMusicRef.current.play()
-          .then(() => {
-            console.log('Music started successfully');
-          })
-          .catch(err => {
-            console.log('Autoplay blocked, will retry on interaction:', err);
-            hasAttemptedPlayRef.current = false;
-          });
-      }
-    };
+    // Notify that audio is ready
+    if (onMusicReady) {
+      onMusicReady();
+    }
 
-    // Add listeners for user interaction to start music
-    const interactionHandler = () => {
-      startMusic();
-    };
-
-    // Try multiple interaction types
-    document.addEventListener('click', interactionHandler);
-    document.addEventListener('touchstart', interactionHandler);
-    document.addEventListener('keydown', interactionHandler);
-    document.addEventListener('scroll', interactionHandler);
-    document.addEventListener('mousemove', interactionHandler);
-
-    // Try to start immediately after a brief delay
-    const timer = setTimeout(() => {
-      startMusic();
-    }, 100);
-
-    // Add hover listeners
+    // Add hover listeners after a short delay
     const hoverTimer = setTimeout(() => {
       addHoverListeners();
     }, 500);
 
     return () => {
-      clearTimeout(timer);
       clearTimeout(hoverTimer);
-      document.removeEventListener('click', interactionHandler);
-      document.removeEventListener('touchstart', interactionHandler);
-      document.removeEventListener('keydown', interactionHandler);
-      document.removeEventListener('scroll', interactionHandler);
-      document.removeEventListener('mousemove', interactionHandler);
-
       if (bgMusicRef.current) {
         bgMusicRef.current.pause();
         bgMusicRef.current = null;
@@ -117,31 +77,38 @@ export default function AudioManager() {
       }
       removeHoverListeners();
     };
-  }, [soundEnabled, preloaderComplete, addHoverListeners, removeHoverListeners]);
+  }, [addHoverListeners, removeHoverListeners, onMusicReady]);
 
-  // Handle sound enable/disable
+  const hasInitializedMusic = useRef(false);
+
+  // Start music when startMusic prop changes - ONLY RUN ONCE
   useEffect(() => {
-    if (!bgMusicRef.current || !preloaderComplete) return;
+    if (startMusic && bgMusicRef.current && !hasInitializedMusic.current) {
+      console.log('🚀 Initializing music from reboot trigger');
+      hasInitializedMusic.current = true;
+      setSoundEnabled(true);
+    }
+  }, [startMusic]);
+
+  // Handle sound toggle
+  useEffect(() => {
+    if (!bgMusicRef.current) return;
 
     if (soundEnabled) {
-      // soundEnabled = true means music should play
-      const playPromise = bgMusicRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            console.log('Music playing');
-          })
-          .catch(err => {
-            console.log('Play prevented:', err);
-          });
-      }
+      bgMusicRef.current.play()
+        .then(() => {
+          setIsPlaying(true);
+          console.log('🔊 Music enabled');
+        })
+        .catch(err => console.log('Play error:', err));
       addHoverListeners();
     } else {
-      // soundEnabled = false means music should pause
       bgMusicRef.current.pause();
+      setIsPlaying(false);
+      console.log('🔇 Music disabled');
       removeHoverListeners();
     }
-  }, [soundEnabled, preloaderComplete, addHoverListeners, removeHoverListeners]);
+  }, [soundEnabled, addHoverListeners, removeHoverListeners]);
 
   // Periodically check for new elements
   useEffect(() => {
@@ -155,13 +122,7 @@ export default function AudioManager() {
   }, [soundEnabled, addHoverListeners]);
 
   const toggleSound = () => {
-    const newState = !soundEnabled;
-    setSoundEnabled(newState);
-
-    if (newState && bgMusicRef.current) {
-      // When turning sound ON (newState = true), start playing music
-      bgMusicRef.current.play().catch(err => console.log('Play error:', err));
-    }
+    setSoundEnabled(!soundEnabled);
   };
 
   return (

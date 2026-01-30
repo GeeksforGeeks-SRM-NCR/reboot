@@ -16,13 +16,13 @@ export default function HeroSection() {
             // Initial red flash
             tl.fromTo(containerRef.current,
                 { backgroundColor: "#1a0000" },
-                { backgroundColor: "transparent", duration: 2, ease: "power2.out" }
+                { backgroundColor: "transparent", duration: 1, ease: "power2.out" }
             );
 
             // Text Reveal
             tl.fromTo(textRef.current,
                 { opacity: 0, scale: 1.1 },
-                { opacity: 1, scale: 1, duration: 1.5, ease: "rough({ template: none.out, strength: 1, points: 20, taper: 'none', randomize: true, clamp: false})" }
+                { opacity: 1, scale: 1, duration: 0.8, ease: "rough({ template: none.out, strength: 1, points: 20, taper: 'none', randomize: true, clamp: false})" }
             );
 
         }, containerRef);

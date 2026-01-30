@@ -12,7 +12,7 @@ export default function BackgroundVideo() {
                 playsInline
                 suppressHydrationWarning
             >
-                <source src="/bgvdo.mp4" type="video/mp4" />
+                <source src="/bgvideo.mp4" type="video/mp4" />
             </video>
 
             {/* Dark overlay for better text readability */}

@@ -51,7 +51,7 @@ export default function RebootSequence() {
                     </div>
                 </div>
             ) : (
-                <div className="absolute inset-0 bg-white text-black flex items-center justify-center animate-in fade-in duration-1000">
+                <div className="absolute inset-0 bg-white text-black flex items-center justify-center animate-in fade-in duration-600">
                     <div className="text-center p-12">
                         <h1 className="text-6xl md:text-9xl font-bold font-heading mb-4 tracking-tighter">
                             RE:BOOT

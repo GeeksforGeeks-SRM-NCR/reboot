@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Russo_One } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "./components/SmoothScroll";
-import AudioManager from "./components/AudioManager";
-import Preloader from "./components/Preloader";
+import RootLayoutClient from "./components/RootLayoutClient";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
@@ -22,11 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${jetbrainsMono.variable} ${russoOne.variable} bg-black text-white antialiased overflow-x-hidden`}>
-        <Preloader />
-        <AudioManager />
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        <RootLayoutClient>{children}</RootLayoutClient>
       </body>
     </html>
   );
