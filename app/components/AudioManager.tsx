@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { cn } from "@/lib/utils";
 
 interface AudioManagerProps {
   startMusic?: boolean;
@@ -128,10 +129,27 @@ export default function AudioManager({ startMusic = false, onMusicReady }: Audio
   return (
     <button
       onClick={toggleSound}
-      className="fixed top-6 right-6 z-[100] bg-red-600/20 hover:bg-red-600/40 border border-red-500/50 text-red-500 px-4 py-2 rounded font-mono text-sm transition-all duration-300 backdrop-blur-sm hover:scale-105"
+      className="fixed top-6 right-6 z-[100] group flex items-center gap-3 bg-white/[0.02] hover:bg-white/[0.05] border border-white/10 hover:border-red-500/50 px-5 py-2.5 transition-all duration-300 backdrop-blur-md active:scale-95"
       aria-label={soundEnabled ? 'Mute sound' : 'Unmute sound'}
     >
-      {soundEnabled ? '🔊 SOUND ON' : '🔇 SOUND OFF'}
+      <div className="relative w-2 h-2">
+        <div className={cn(
+          "absolute inset-0 rounded-full",
+          soundEnabled ? "bg-red-500 animate-pulse" : "bg-zinc-600"
+        )} />
+        {soundEnabled && (
+          <div className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-25" />
+        )}
+      </div>
+      <span className={cn(
+        "font-mono text-[10px] tracking-[0.3em] font-bold transition-colors",
+        soundEnabled ? "text-red-500" : "text-zinc-500"
+      )}>
+        {soundEnabled ? 'SYSTEM_AUDIO: ON' : 'SYSTEM_AUDIO: OFF'}
+      </span>
+      {/* Corner Ticks */}
+      <div className="absolute top-0 right-0 w-1.5 h-1.5 border-t border-r border-white/20 group-hover:border-red-500/50 transition-colors" />
+      <div className="absolute bottom-0 left-0 w-1.5 h-1.5 border-b border-l border-white/20 group-hover:border-red-500/50 transition-colors" />
     </button>
   );
 }
