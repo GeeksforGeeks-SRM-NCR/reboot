@@ -9,7 +9,6 @@ interface PreloaderProps {
 export default function Preloader({ onReboot }: PreloaderProps) {
   const [isComplete, setIsComplete] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [isClickImpact, setIsClickImpact] = useState(false);
 
   useEffect(() => {
     // Show REBOOT button after short sequence
@@ -21,20 +20,15 @@ export default function Preloader({ onReboot }: PreloaderProps) {
   }, []);
 
   const handleReboot = () => {
-    setIsClickImpact(true);
-    // Dramatic pause for impact
-    setTimeout(() => {
-      setIsComplete(true);
-      setTimeout(() => {
-        onReboot();
-      }, 500);
-    }, 400);
+    setIsComplete(true);
+    // Mount the site immediately so it fades in UNDER the preloader
+    onReboot();
   };
 
   if (isComplete) return null;
 
   return (
-    <div className={`fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center transition-all duration-1000 ${isComplete ? 'opacity-0 scale-125 pointer-events-none' : 'opacity-100'} ${isClickImpact ? 'invert brightness-150' : ''}`}>
+    <div className={`fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center transition-opacity duration-700 ${isComplete ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
       {/* Cinematic Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <video
@@ -52,7 +46,7 @@ export default function Preloader({ onReboot }: PreloaderProps) {
       </div>
 
       {/* Main Content */}
-      <div className={`relative z-10 flex flex-col items-center gap-16 text-center w-full max-w-xl px-6 transition-all duration-300 ${isClickImpact ? 'scale-90 opacity-0' : 'scale-100 opacity-100'}`}>
+      <div className={`relative z-10 flex flex-col items-center gap-16 text-center w-full max-w-xl px-6 transition-all duration-300 ${isComplete ? 'scale-90 opacity-0' : 'scale-100 opacity-100'}`}>
         <div className="space-y-4">
           <div className="h-[1px] w-64 bg-zinc-900 mx-auto overflow-hidden relative">
             <div className={`h-full bg-red-600 shadow-[0_0_15px_#dc2626] transition-all duration-[3000ms] ease-in-out ${isReady ? 'w-full' : 'w-0'}`} />
@@ -103,9 +97,6 @@ export default function Preloader({ onReboot }: PreloaderProps) {
       <div className="absolute inset-0 pointer-events-none z-[100] opacity-[0.05] select-none mix-blend-overlay"
         style={{ backgroundImage: `linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05))` }}
       />
-
-      {/* CRT Flicker Overlay */}
-      <div className={`absolute inset-0 pointer-events-none z-[150] bg-white transition-opacity duration-75 ${isClickImpact ? 'opacity-100' : 'opacity-0'}`} />
     </div>
   );
 }

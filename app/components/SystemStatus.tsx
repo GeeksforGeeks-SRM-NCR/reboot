@@ -25,14 +25,15 @@ export default function SystemStatus() {
             gsap.from(cardsRef.current, {
                 scrollTrigger: {
                     trigger: containerRef.current,
-                    start: "top center",
-                    end: "bottom center",
-                    scrub: 1,
+                    start: "top 80%", // Reveal when top of section hits 80% of viewport
+                    toggleActions: "play none none reverse",
                 },
-                y: 100,
+                y: 50,
                 opacity: 0,
                 stagger: 0.1,
-                rotateX: -15,
+                rotateX: -10,
+                duration: 0.8,
+                ease: "power2.out",
             });
         }, containerRef);
 

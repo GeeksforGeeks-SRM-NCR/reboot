@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import GlitchText from "./ui/GlitchText";
@@ -8,16 +9,18 @@ import GlitchText from "./ui/GlitchText";
 export default function HeroSection() {
     const containerRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLDivElement>(null);
+    const logoRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
             const tl = gsap.timeline();
 
-            // Initial red flash
-            tl.fromTo(containerRef.current,
-                { backgroundColor: "#1a0000" },
-                { backgroundColor: "transparent", duration: 1, ease: "power2.out" }
+            // Logo reveal
+            tl.fromTo(logoRef.current,
+                { opacity: 0, x: -20 },
+                { opacity: 1, x: 0, duration: 1, ease: "power2.out" }
             );
+
 
             // Text Reveal
             tl.fromTo(textRef.current,
@@ -32,6 +35,20 @@ export default function HeroSection() {
 
     return (
         <section ref={containerRef} className="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden">
+            {/* Official Logo */}
+            <div ref={logoRef} className="fixed top-[-35px] left-6 z-[0]">
+                <div className="relative w-32 h-14 md:w-44 md:h-40 group transition-all duration-300">
+                    <div className="absolute inset-0  blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <Image
+                        src="/logo.png"
+                        alt="RE:BOOT Official Logo"
+                        fill
+                        className="object-contain brightness-110 drop-shadow-[0_0_8px_rgba(220,38,38,0.2)] transition-all duration-300 group-hover:scale-105"
+                        priority
+                    />
+                </div>
+            </div>
+
             <div ref={textRef} className="z-10 text-center flex flex-col items-center gap-6">
                 <div className="border border-red-500/50 bg-red-900/10 px-4 py-2 text-red-500 font-mono text-sm tracking-widest uppercase mb-4 animate-pulse">
                     ⚠ Critical System Alert ⚠
