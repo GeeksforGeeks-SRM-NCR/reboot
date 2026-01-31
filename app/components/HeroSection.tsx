@@ -36,17 +36,7 @@ export default function HeroSection() {
         <section ref={containerRef} className="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden">
             {/* Official Logo */}
             <div ref={logoRef} className="fixed top-6 left-6 z-[100] group">
-                <div className="relative border border-white/10 bg-black/40 backdrop-blur-md flex items-center justify-center transition-all duration-300 group-hover:border-red-600/30 overflow-hidden">
-                    {/* Corner accents for the logo box */}
-                    <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/20 group-hover:border-red-600/50" />
-                    <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-white/20 group-hover:border-red-600/50" />
-
-                    <img
-                        src="/logo.png"
-                        alt="RE:BOOT Official Logo"
-                        className="h-12 md:h-20 w-auto object-contain brightness-110 transition-all duration-300 p-1"
-                    />
-                </div>
+                
                 {/* Micro tech label below logo */}
                 <div className="mt-2 font-mono text-[7px] tracking-[0.4em] text-zinc-600 uppercase opacity-0 group-hover:opacity-100 transition-opacity">
                     Authorized_System_Chassis

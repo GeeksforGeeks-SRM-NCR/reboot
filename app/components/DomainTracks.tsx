@@ -111,7 +111,7 @@ export default function DomainTracks() {
                     </div>
                 </div>
 
-                {/* Bottom Status Bar */}
+                {/* Bottom Status Bar */}   
                 <div className="container mx-auto px-6 flex justify-between items-center opacity-20 mt-12">
                     <div className="font-mono text-[8px] tracking-[0.4em] uppercase">Scanning across sectors...</div>
                     <div className="flex gap-4">
